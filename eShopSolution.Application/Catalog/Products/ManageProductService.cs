@@ -1,10 +1,8 @@
-﻿
-using eShopSolution.Application.Common;
+﻿using eShopSolution.Application.Common;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Exceptions;
 using eShopSolution.ViewModels.Catalog.Products;
-using eShopSolution.ViewModels.Catalog.Products.Manage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +26,7 @@ namespace eShopSolution.Application.Catalog.Products
             _storageService = storageService;
         }
 
-        public Task<int> AddImages(int productId, List<IFormFile> files)
+        public Task<int> AddImage(int productId, List<IFormFile> files)
         {
             throw new NotImplementedException();
         }
@@ -96,7 +94,7 @@ namespace eShopSolution.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
         {
             //1. Select join
             var query = from p in _context.Products
@@ -149,7 +147,7 @@ namespace eShopSolution.Application.Catalog.Products
             throw new NotImplementedException();
         }
 
-        public Task<int> RemoveImages(int imageId)
+        public Task<int> RemoveImage(int imageId)
         {
             throw new NotImplementedException();
         }
@@ -184,7 +182,7 @@ namespace eShopSolution.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
         {
             throw new NotImplementedException();
         }
