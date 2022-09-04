@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eShopSolution.ViewModels.System.Users
 {
-    public class UserVM
+    public class UserVM 
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

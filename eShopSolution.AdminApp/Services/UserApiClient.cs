@@ -31,6 +31,22 @@ namespace eShopSolution.AdminApp.Services
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
+            //if (request.Keyword != null)
+            //{
+            //    var response = await client.GetAsync($"/api/users/paging?pageIndex=" +
+            //    $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
+            //    var body = await response.Content.ReadAsStringAsync();
+            //    var users = JsonConvert.DeserializeObject<PagedResult<UserVM>>(body);
+            //    return users;
+            //}
+            //else
+            //{
+            //    var response = await client.GetAsync($"/api/users/paging?pageIndex=" +
+            //    $"{request.PageIndex}&pageSize={request.PageSize}");
+            //    var body = await response.Content.ReadAsStringAsync();
+            //    var users = JsonConvert.DeserializeObject<PagedResult<UserVM>>(body);
+            //    return users;
+            //}
             var response = await client.GetAsync($"/api/users/paging?pageIndex=" +
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
             var body = await response.Content.ReadAsStringAsync();
