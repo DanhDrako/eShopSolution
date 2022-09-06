@@ -4,12 +4,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
-var mvcBuilder = builder.Services.AddRazorPages();
 
-if (builder.Environment.IsDevelopment())
-{
-    mvcBuilder.AddRazorRuntimeCompilation();
-}
 
 builder.Services.AddHttpClient();
 
@@ -30,8 +25,14 @@ builder.Services.AddSession(options =>
     //options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
+var mvcBuilder = builder.Services.AddRazorPages();
 
+if (builder.Environment.IsDevelopment())
+{
+    mvcBuilder.AddRazorRuntimeCompilation();
+}
 
 var app = builder.Build();
 
