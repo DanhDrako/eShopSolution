@@ -17,26 +17,28 @@
                 <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
             </div>
             <div class="card-body">
-                <table id="datatablesSimple">
+            <div class="table-responsive">
+                @*<table id="datatablesSimple">*@
+                <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>
-                                FirstName
-                            </th>
-                            <th>
-                                LastName
-                            </th>
-                            <th>
-                                PhoneNumber
-                            </th>
-                            <th>
-                                UserName
-                            </th>
-                            <th>
-                                Email
-                            </th>
-                            <th></th>
-                        </tr>
+                    <tr>
+                        <th>
+                            Tên
+                        </th>
+                        <th>
+                            Họ
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                            Tài khoản
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
                     @foreach (var item in Model.Items)
@@ -67,9 +69,9 @@
                     </tbody>
                 </table>
             </div>
+                @await Component.InvokeAsync("Pager",Model)
+            </div>
         </div>
     </div>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 
