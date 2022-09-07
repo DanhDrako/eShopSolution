@@ -9,9 +9,9 @@ namespace eShopSolution.ViewModels.System.Users
 {
     public class RegisterRequest
     {
-        [Display(Name= "Họ")]
+        [Display(Name= "Tên")]
         public string FirstName { get; set; }
-        [Display(Name = "Tên")]
+        [Display(Name = "Họ")]
         public string LastName { get; set; }
         [Display(Name = "Ngày sinh")]
         [DataType(DataType.Date)]
