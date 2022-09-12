@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace eShopSolution.ViewModels.System.Users
 {
-    public class UserVM 
+    public class UserVm
     {
         public Guid Id { get; set; }
         [Display(Name = "Tên")]
@@ -23,5 +23,6 @@ namespace eShopSolution.ViewModels.System.Users
         public string  UserName { get; set; }
         [Display(Name = "Email")]
         public string  Email { get; set; }
+        public IList<string> Roles { get; set; }
     }
 }
