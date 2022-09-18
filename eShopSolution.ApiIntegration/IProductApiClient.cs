@@ -2,7 +2,7 @@
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eShopSolution.AdminApp.Services
+namespace eShopSolution.ApiIntegration
 {
     public interface IProductApiClient
     {

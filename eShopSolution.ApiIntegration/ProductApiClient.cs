@@ -4,8 +4,9 @@ using eShopSolution.ViewModels.Common;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-
-namespace eShopSolution.AdminApp.Services
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+namespace eShopSolution.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {

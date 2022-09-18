@@ -4,8 +4,10 @@ using eShopSolution.ViewModels.System.Roles;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
-namespace eShopSolution.AdminApp.Services
+namespace eShopSolution.ApiIntegration
 {
     public class LanguageApiClient : BaseApiClient, ILanguageApiClient
     {
