@@ -39,6 +39,22 @@ namespace eShopSolution.BackendApi.Controllers
                 return BadRequest("Cannot find product");
             return Ok(product);
         }
+
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
+        {
+            var products = await _productService.GetFeaturedProducts(languageId, take);
+            return Ok(products);
+        }
+
+        [HttpGet("latest/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLatestProducts(int take, string languageId)
+        {
+            var products = await _productService.GetLatestProducts(languageId, take);
+            return Ok(products);
+        }
         //Create
         [HttpPost]
         [Consumes("multipart/form-data")]
