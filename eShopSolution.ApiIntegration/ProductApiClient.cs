@@ -4,8 +4,10 @@ using eShopSolution.ViewModels.Common;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
-namespace eShopSolution.AdminApp.Services
+namespace eShopSolution.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {
@@ -87,6 +89,18 @@ namespace eShopSolution.AdminApp.Services
         public async Task<ProductVm> GetById(int id, string languageId)
         {
             var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
+            return data;
+        }
+
+        public async Task<List<ProductVm>> GetFeaturedProducts(string languageId, int take)
+        {
+            var data = await GetListAsync<ProductVm>($"/api/products/featured/{languageId}/{take}");
+            return data;
+        }
+
+        public async Task<List<ProductVm>> GetLatestProducts(string languageId, int take)
+        {
+            var data = await GetListAsync<ProductVm>($"/api/products/latest/{languageId}/{take}");
             return data;
         }
 

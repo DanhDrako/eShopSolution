@@ -1,10 +1,12 @@
 ﻿using eShopSolution.Utilities.Constants;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
-namespace eShopSolution.AdminApp.Services
+namespace eShopSolution.ApiIntegration
 {
     public class BaseApiClient
     {

@@ -3,8 +3,9 @@ using eShopSolution.ViewModels.System.Users;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-
-namespace eShopSolution.AdminApp.Services
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+namespace eShopSolution.ApiIntegration
 {
     public class UserApiClient : IUserApiClient
     {
