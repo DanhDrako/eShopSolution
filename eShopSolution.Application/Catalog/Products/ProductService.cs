@@ -1,6 +1,7 @@
 ﻿using eShopSolution.Application.Common;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
+using eShopSolution.Utilities.Constants;
 using eShopSolution.Utilities.Exceptions;
 using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.ViewModels.Catalog.Products;
@@ -58,6 +59,34 @@ namespace eShopSolution.Application.Catalog.Products
 
         public async Task<int> Create(ProductCreateRequest request)
         {
+            var languages = _context.Languages;
+            var translations = new List<ProductTranslation>();
+            foreach (var language in languages)
+            {
+                if (language.Id == request.LanguageId)
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = request.Name,
+                        Description = request.Description,
+                        Details = request.Details,
+                        SeoDescription = request.SeoDescription,
+                        SeoAlias = request.SeoAlias,
+                        SeoTitle = request.SeoTitle,
+                        LanguageId = request.LanguageId
+                    });
+                }
+                else
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = SystemConstants.ProductConstants.NA,
+                        Description = SystemConstants.ProductConstants.NA,
+                        SeoAlias = SystemConstants.ProductConstants.NA,
+                        LanguageId = language.Id
+                    });
+                }
+            }
             var product = new Product()
             {
                 Price = request.Price,
@@ -65,19 +94,7 @@ namespace eShopSolution.Application.Catalog.Products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                ProductTranslations = new List<ProductTranslation>()
-                {
-                    new ProductTranslation()
-                    {
-                        Name= request.Name,
-                        Description= request.Description,
-                        Details= request.Details,
-                        SeoDescription= request.SeoDescription,
-                        SeoTitle= request.SeoTitle,
-                        SeoAlias= request.SeoAlias,
-                        LanguageId= request.LanguageId
-                    }
-                }
+                ProductTranslations = translations
             };
             //Save image
             if (request.ThumbnailImage != null)
@@ -96,7 +113,7 @@ namespace eShopSolution.Application.Catalog.Products
                 };
             }
             _context.Products.Add(product);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return product.Id;
         }
 
@@ -123,28 +140,29 @@ namespace eShopSolution.Application.Catalog.Products
                         join c in _context.Categories on pic.CategoryId equals c.Id into picc
                         from c in picc.DefaultIfEmpty()
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt,pic};
+                        select new { p, pt, pic };
             //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
-            {
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
-            }
-            if (request.CategoryId != null && request.CategoryId !=0)
+
+            if (request.CategoryId != null && request.CategoryId != 0)
             {
                 query = query.Where(p => p.pic.CategoryId == request.CategoryId);
             }
+
             //3. Paging
             int totalRow = await query.CountAsync();
-            var data = await query.Skip((request.PageIndex - 1)* request.PageSize)
+
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
                 {
-                    Id=x.p.Id,
-                    Name= x.pt.Name,
-                    DateCreated= x.p.DateCreated,
-                    Description= x.pt.Description,
-                    Details= x.pt.Details,
-                    LanguageId= x.pt.LanguageId,
+                    Id = x.p.Id,
+                    Name = x.pt.Name,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
                     OriginalPrice = x.p.OriginalPrice,
                     Price = x.p.Price,
                     SeoAlias = x.pt.SeoAlias,
@@ -152,15 +170,14 @@ namespace eShopSolution.Application.Catalog.Products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount
-                 
-                }).ToListAsync(); ;
+                }).ToListAsync();
 
             //4. Select and projection
             var pagedResult = new PagedResult<ProductVm>()
             {
                 TotalRecords = totalRow,
-                PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
                 Items = data
             };
             return pagedResult;
