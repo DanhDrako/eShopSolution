@@ -157,6 +157,9 @@
     <value>Login</value>
     <comment>Layouts</comment>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="More Details" xml:space="preserve">
     <value>More Details</value>
   </data>
