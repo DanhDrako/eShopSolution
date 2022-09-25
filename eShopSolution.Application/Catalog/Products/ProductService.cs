@@ -22,7 +22,7 @@ namespace eShopSolution.Application.Catalog.Products
     {
         private readonly EShopDbContext _context;
         private readonly IStorageService _storageService;
-        //private const string USER_CONTENT_FOLDER_NAME = "user-content";
+        private const string USER_CONTENT_FOLDER_NAME = "user-content";
         public ProductService(EShopDbContext context, IStorageService storageService)
         {
             _context = context;
@@ -82,7 +82,10 @@ namespace eShopSolution.Application.Catalog.Products
                     {
                         Name = SystemConstants.ProductConstants.NA,
                         Description = SystemConstants.ProductConstants.NA,
+                        Details = SystemConstants.ProductConstants.NA,
+                        SeoDescription = SystemConstants.ProductConstants.NA,
                         SeoAlias = SystemConstants.ProductConstants.NA,
+                        SeoTitle = SystemConstants.ProductConstants.NA,
                         LanguageId = language.Id
                     });
                 }
@@ -195,6 +198,7 @@ namespace eShopSolution.Application.Catalog.Products
                                     join pic in _context.ProductInCategories on c.Id equals pic.CategoryId
                                     where pic.ProductId == productId && ct.LanguageId == languageId
                                     select ct.Name).ToListAsync();
+            var image = await _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
             var productViewModel = new ProductVm()
             {
                 Id = product.Id,
@@ -210,7 +214,8 @@ namespace eShopSolution.Application.Catalog.Products
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
-                Categories= categories
+                Categories= categories,
+                ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return productViewModel;
         }
@@ -325,7 +330,7 @@ namespace eShopSolution.Application.Catalog.Products
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
+            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
         public async Task<PagedResult<ProductVm>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request)
         {

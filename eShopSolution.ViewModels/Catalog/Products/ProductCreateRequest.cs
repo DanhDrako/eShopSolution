@@ -23,7 +23,7 @@ namespace eShopSolution.ViewModels.Catalog.Products
         [Display(Name = "Mô tả")]
         public string Description { set; get; }
         [Display(Name = "Chi tiết")]
-        public string Details { set; get; }
+        public string? Details { set; get; }
         public string SeoDescription { set; get; }
         public string SeoTitle { set; get; }
 
