@@ -71,13 +71,15 @@ namespace eShopSolution.BackendApi.Controllers
             return CreatedAtAction(nameof(GetById), new {id = productId}, product);
         }
         //Update
-        [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        [HttpPut("productId")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute] int productId, [FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            request.Id = productId;
             var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
@@ -85,8 +87,13 @@ namespace eShopSolution.BackendApi.Controllers
         }
         //Delete
         [HttpDelete("productId")]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Delete(int productId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var affectedResult = await _productService.Delete(productId);
             if (affectedResult == 0)
                 return BadRequest();

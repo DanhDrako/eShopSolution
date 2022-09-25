@@ -22,6 +22,7 @@ namespace eShopSolution.ApiIntegration
             _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = httpClientFactory;
         }
+        
         protected async Task<TResponse> GetAsync<TResponse>(string url)
         {
             var sessions = _httpContextAccessor.HttpContext
