@@ -1,5 +1,7 @@
 using eShopSolution.ApiIntegration;
+using eShopSolution.ViewModels.System.Users;
 using eShopSolution.WebApp.LocalizationResources;
+using FluentValidation.AspNetCore;
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
@@ -19,7 +21,9 @@ var cultures = new[]
                 new CultureInfo("vi"),
             };
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
+builder.Services
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>())
+    .AddControllersWithViews().AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
 {
     ops.UseAllCultureProviders = false;
     ops.ResourcesPath = "LocalizationResources";
