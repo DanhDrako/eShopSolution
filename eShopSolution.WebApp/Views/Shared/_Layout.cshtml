@@ -1,6 +1,8 @@
 ﻿@{
 	var culture = CultureInfo.CurrentCulture.Name;
 }
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +37,8 @@
 	<style type="text/css" id="enject"></style>
 </head>
 <body>
+	<input type="hidden" id="hidCulture" value="@culture" />
+	<input type="hidden" id="hidBaseAddress" value="@Configuration["BaseAddress"]" />
 	<div id="header">
 		<div class="container">
 			<div id="welcomeLine" class="row">
@@ -51,7 +55,11 @@
 						<language-nav language-label="NativeName"
 									  cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area= "", cltr="{0}", returnUrl="{1}" }))">
 						</language-nav>
-						<a href="product_summary.html"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+						<a href="/@culture/cart">
+							<span class="btn btn-mini btn-primary">
+								<i class="icon-shopping-cart icon-white"></i> [ <span id="lbl_number_items_header">0</span> ] Itemes in your cart
+							</span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -63,7 +71,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				<div class="navbar-inner">
-					<a class="brand" href="index.html"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
+					<a class="brand" href="/"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
 					<form class="form-inline navbar-search" method="post" action="products.html">
 						<input id="srchFld" class="srchTxt" type="text" />
 						<select class="srchTxt">
@@ -160,7 +168,12 @@
 
 	<script src="/themes/js/bootshop.js"></script>
 	<script src="/themes/js/jquery.lightbox-0.5.js"></script>
-
+	<script src="/js/site.js"></script>
+	<script>
+		var site= new SiteController();
+		site.initialize();
+	</script>
+	@RenderSection("scripts", required:false)
 	<!-- Themes switcher section ============================================================================================= -->
 	<div id="secectionBox">
 		<link rel="stylesheet" href="/themes/switch/themeswitch.css" type="text/css" media="screen" />
